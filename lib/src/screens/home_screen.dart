@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:appmovil_epmpolitecnico/src/widgets/custom_card.dart';
+import 'package:appmovil_epmpolitecnico/src/screens/perfil_usuario.dart';
+
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -50,7 +52,10 @@ class HomeScreen extends StatelessWidget {
                 ),
                 onTap: () {
                   Navigator.pop(context);
-                  // Navegar a la pantalla de perfil
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MiPerfilScreen()),
+                  );
                 },
               ),
               ListTile(
