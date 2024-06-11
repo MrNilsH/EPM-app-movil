@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import '../models/card_item.dart';
+import 'package:appmovil_epmpolitecnico/src/screens/detail_screen.dart';
 
-class CustomCard extends StatelessWidget {
-  final String imagePath;
-  final String title;
-  final String description;
+class CardWidget extends StatelessWidget {
+  final CardItem cardItem;
 
-  CustomCard({required this.imagePath, required this.title, required this.description});
+  CardWidget({required this.cardItem});
 
   @override
   Widget build(BuildContext context) {
@@ -15,36 +15,32 @@ class CustomCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(15.0),
       ),
       child: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset(
-              imagePath,
-              fit: BoxFit.cover,
-            ),
-            SizedBox(height: 10.0),
+            Image.asset(cardItem.imagePath),
+            SizedBox(height: 8.0),
             Text(
-              title,
+              cardItem.title,
               style: TextStyle(
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold,
                 color: Colors.teal,
               ),
             ),
-            SizedBox(height: 10.0),
-            Text(
-              description,
-              style: TextStyle(
-                fontSize: 14.0,
-                color: Colors.black,
-              ),
-            ),
-            SizedBox(height: 10.0),
+            SizedBox(height: 8.0),
+            Text(cardItem.description),
+            SizedBox(height: 8.0),
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  // Acción al presionar el botón
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DetailScreen(cardItem: cardItem),
+                    ),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFF005c70),

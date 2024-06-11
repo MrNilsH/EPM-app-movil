@@ -1,17 +1,63 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:appmovil_epmpolitecnico/src/widgets/custom_card.dart';
+import 'package:appmovil_epmpolitecnico/src/models/card_item.dart';
+import 'package:appmovil_epmpolitecnico/src/utils/authentication.dart';
+import 'package:appmovil_epmpolitecnico/src/screens/login_screen.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  TextEditingController _searchController = TextEditingController();
+  List<CardItem> _filteredItems = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _filteredItems = cardItems; // Inicialmente muestra todas las tarjetas
+    _searchController.addListener(() {
+      filterCards();
+    });
+  }
+
+  void filterCards() {
+    String query = _searchController.text.toLowerCase();
+    setState(() {
+      _filteredItems = cardItems.where((item) {
+        return item.title.toLowerCase().contains(query) || item.description.toLowerCase().contains(query);
+      }).toList();
+    });
+  }
+
+  Future<void> _logout() async {
+    AuthenticationService auth = AuthenticationService();
+    await auth.logout();
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+    );
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: AppBar(
         backgroundColor: Color(0xFF001528),
-        iconTheme: IconThemeData(
+        iconTheme: const IconThemeData(
           color: Colors.white, // Cambiar el color del icono a blanco
         ),
       ),
+
       drawer: Drawer(
         child: Container(
           color: Color(0xFF001528),
@@ -21,7 +67,7 @@ class HomeScreen extends StatelessWidget {
               DrawerHeader(
                 margin: EdgeInsets.zero,
                 padding: EdgeInsets.all(20.0), // Ajustar el padding para cambiar el tamaño
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Color(0xFF001528),
                 ),
                 child: Center(
@@ -60,37 +106,35 @@ class HomeScreen extends StatelessWidget {
                   style: TextStyle(color: Colors.white),
                 ),
                 onTap: () {
-                  Navigator.pop(context);
-                  // Añadir la lógica para cerrar sesión
+                  _logout();
                 },
               ),
             ],
           ),
         ),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
 
-          child: SingleChildScrollView(
-            child: Column(
-          children: [
-            SizedBox(height: 30),
-
-            const Text(
-              '¡ Bienvenido a tu zona de salud !',
-              style: TextStyle(
-                fontSize: 22.0,
-                fontWeight: FontWeight.bold,
-                color: Colors.teal,
-              ),
-              textAlign: TextAlign.center,
+      body: Column(
+        children: [
+          SizedBox(height: 30),
+          const Text(
+            '¡ Bienvenido a tu zona de salud !',
+            style: TextStyle(
+              fontSize: 22.0,
+              fontWeight: FontWeight.bold,
+              color: Colors.teal,
             ),
+            textAlign: TextAlign.center,
+          ),
 
-            SizedBox(height: 20),
+          SizedBox(height: 20),
 
-            TextField(
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            child: TextField(
+              controller: _searchController,
               decoration: InputDecoration(
-                hintText: 'Busca temas de tu interes ...',
+                hintText: 'Busca temas de tu interés ...',
                 prefixIcon: Icon(Icons.search),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30.0),
@@ -98,30 +142,22 @@ class HomeScreen extends StatelessWidget {
                 contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
               ),
             ),
-
-            SizedBox(height: 20.0),
-
-            CustomCard(
-              imagePath: 'assets/images/dietas.png',
-              title: 'Dietas Saludables',
-              description: 'Esta sección incluye recomendaciones sobre el consumo de frutas, verduras y otros alimentos nutritivos, ayudándote a planificar tus comidas de manera efectiva.',
-            ),
-            CustomCard(
-              imagePath: 'assets/images/ejercicio.png',
-              title: 'Mantente en Forma',
-              description: 'Aquí encontrarás recursos y consejos para diferentes tipos de actividades, desde entrenamiento con pesas hasta yoga.',
-            ),
-            CustomCard(
-              imagePath: 'assets/images/salud.png',
-              title: 'Consejos de Salud',
-              description: 'Encuentra valiosos consejos de salud y bienestar en esta sección.',
-            ),
-
-
-          ],
-        ),
           ),
-        ),
-      );
+
+          SizedBox(height: 20.0),
+
+          Expanded(
+            child: ListView.builder(
+              itemCount: _filteredItems.length,
+              itemBuilder: (context, index) {
+                return CardWidget(cardItem: _filteredItems[index]);
+              },
+            ),
+          ),
+
+        ],
+      ),
+
+    );
   }
 }

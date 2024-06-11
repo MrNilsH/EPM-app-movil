@@ -1,50 +1,99 @@
 import 'package:flutter/material.dart';
 import 'package:appmovil_epmpolitecnico/src/screens/home_screen.dart';
 import 'package:appmovil_epmpolitecnico/src/screens/register_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../utils/authentication.dart';
 
-import 'home_screen.dart';
+class LoginScreen extends StatefulWidget {
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
 
-class LoginScreen extends StatelessWidget {
-  final TextEditingController _usernameController = TextEditingController();
+class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final AuthenticationService _authService = AuthenticationService();
+  bool _isLoading = false;
+
+  Future<void> _login() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      print("Attempting login for ${_emailController.text}");
+      bool success = await _authService.login(
+        _emailController.text,
+        _passwordController.text,
+      );
+
+      if (success) {
+        print("Login successful");
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+        );
+      } else {
+        print("Login failed");
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Correo electrónico o contraseña incorrectos',
+              style: TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      print("Error during login: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Ocurrió un error',
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFF061829),
-
       appBar: AppBar(
         backgroundColor: Color(0xFF061829),
         title: const Row(
-          mainAxisAlignment: MainAxisAlignment.center, // Centra horizontalmente
-          mainAxisSize: MainAxisSize.min, // Ajusta el tamaño del Row al contenido
-
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(width: 10),
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 2), // Margen superior e inferior
+              padding: EdgeInsets.symmetric(vertical: 2),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-
                 children: [
                   Text(
                     'BIENESTAR',
-                    style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold), // Cambia el tamaño del texto aquí
+                    style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),
                   ),
                   Text(
                     'EN LINEA',
-                    style: TextStyle(color: Colors.white, fontSize: 16), // Cambia el tamaño del texto aquí
+                    style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                 ],
-
               ),
             ),
           ],
         ),
         centerTitle: true,
-
       ),
-
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
         child: Column(
@@ -56,14 +105,13 @@ class LoginScreen extends StatelessWidget {
               style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 25),
-
             Text(
               'Correo Electrónico',
               style: TextStyle(color: Colors.white),
             ),
             SizedBox(height: 15),
             TextField(
-              controller: _usernameController,
+              controller: _emailController,
               decoration: InputDecoration(
                 filled: true,
                 fillColor: Colors.white,
@@ -95,86 +143,59 @@ class LoginScreen extends StatelessWidget {
               ),
               obscureText: true,
             ),
-
             SizedBox(height: 40),
-
             Center(
               child: Column(
                 children: [
-
-                  //BOTÓN INICIO SESIÓN
                   ElevatedButton(
-
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => HomeScreen()),
-                      );
-                    },
-
+                    onPressed: _isLoading ? null : _login,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF005c70), // Cambiar el color del botón
+                      backgroundColor: Color(0xFF005c70),
                       padding: EdgeInsets.symmetric(horizontal: 70, vertical: 15),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
                     ),
-
-                    child: const Text(
-                        'Iniciar Sesión',
-                        style: TextStyle(color: Colors.white), // Cambiar el color del texto a blanco
+                    child: _isLoading
+                        ? CircularProgressIndicator()
+                        : const Text(
+                      'Iniciar Sesión',
+                      style: TextStyle(color: Colors.white),
                     ),
-
                   ),
-
                   SizedBox(height: 20),
-
-                  //BOTÓN CREAR CUENTA
-
                   ElevatedButton(
-
                     onPressed: () {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) => RegisterScreen()),
                       );
                     },
-
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF005c70), // Cambiar el color del botón
+                      backgroundColor: Color(0xFF005c70),
                       padding: EdgeInsets.symmetric(horizontal: 70, vertical: 15),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
                     ),
-
                     child: const Text(
                       'Crear Cuenta',
-                      style: TextStyle(color: Colors.white), // Cambiar el color del texto a blanco
+                      style: TextStyle(color: Colors.white),
                     ),
-
                   ),
-
                   SizedBox(height: 20),
-
-                  // BOTÓN OLVIDASTE CONTRASEÑA
-
                   TextButton(
-
                     onPressed: () {
                       // Aquí puedes añadir la lógica de olvidar contraseña
                     },
-
                     child: const Text(
                       '¿Olvidaste tu Contraseña?',
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
-
                 ],
               ),
             ),
-
           ],
         ),
       ),
