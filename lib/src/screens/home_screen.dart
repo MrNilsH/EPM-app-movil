@@ -4,6 +4,7 @@ import 'package:appmovil_epmpolitecnico/src/widgets/custom_card.dart';
 import 'package:appmovil_epmpolitecnico/src/models/card_item.dart';
 import 'package:appmovil_epmpolitecnico/src/utils/authentication.dart';
 import 'package:appmovil_epmpolitecnico/src/screens/login_screen.dart';
+import 'package:appmovil_epmpolitecnico/src/screens/perfil_usuario.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -96,7 +97,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 onTap: () {
                   Navigator.pop(context);
-                  // Navegar a la pantalla de perfil
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MiPerfilScreen()),
+                  );
                 },
               ),
               ListTile(

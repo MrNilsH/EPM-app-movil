@@ -10,11 +10,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'TuSalud App',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
       home: FutureBuilder(
         future: _checkLoginStatus(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return Center(child: CircularProgressIndicator()); // Add Center to properly position the loader
           } else {
             return snapshot.data == true ? HomeScreen() : LoginScreen();
           }
