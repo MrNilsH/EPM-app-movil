@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:appmovil_epmpolitecnico/src/screens/home_screen.dart';
 import 'package:appmovil_epmpolitecnico/src/screens/register_screen.dart';
 
-import 'home_screen.dart';
+// import 'home_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   final TextEditingController _usernameController = TextEditingController();
