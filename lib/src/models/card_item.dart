@@ -52,6 +52,7 @@ List<CardItem> cardItems = [
         shortDescription: 'El entrenamiento con pesas ayuda a aumentar la masa muscular y mejorar la fuerza.',
         longDescription: 'El entrenamiento con pesas es una forma eficaz de aumentar la masa muscular, mejorar la fuerza y acelerar el metabolismo. Levantar pesas regularmente puede mejorar la densidad ósea, reducir el riesgo de lesiones y aumentar la capacidad funcional. Es importante mantener una técnica adecuada para evitar lesiones.',
         exercise: 'Realiza una rutina de levantamiento de pesas tres veces por semana, enfocándote en todos los grupos musculares principales. Ejemplo de rutina: \n1. Sentadillas: 3 series de 12 repeticiones. \n2. Press de banca: 3 series de 10 repeticiones. \n3. Remo con mancuernas: 3 series de 12 repeticiones. \n4. Peso muerto: 3 series de 10 repeticiones. \n5. Press de hombros: 3 series de 12 repeticiones. Asegúrate de calentar antes de comenzar y estirar al finalizar.',
+        audioPath: ['assets/audio/freccero.mp3', 'assets/audio/sportelectrobeat.mp3']
       ),
       RelatedTopic(
         title: 'Estiramiento',
@@ -139,6 +140,7 @@ List<CardItem> cardItems = [
         shortDescription: 'Diferentes técnicas de meditación, como la meditación guiada y la meditación trascendental, y sus beneficios.',
         longDescription: 'La meditación puede tomar muchas formas, desde la meditación guiada hasta la meditación trascendental. Cada técnica tiene sus propios beneficios, pero todas comparten el objetivo de calmar la mente y mejorar el bienestar mental. La práctica regular de la meditación puede reducir el estrés, mejorar la concentración y aumentar la sensación de bienestar.',
         exercise: 'Sigue una sesión de meditación guiada de 15 minutos cada noche antes de dormir para mejorar tu descanso. Pasos para la meditación guiada: \n1. Encuentra una meditación guiada que te guste en una aplicación o en YouTube. \n2. Siéntate o acuéstate en un lugar cómodo. \n3. Sigue las instrucciones de la meditación guiada, enfocándote en tu respiración y dejando que tu mente se relaje.',
+        audioPath: ['assets/audio/meditation.mp3', 'assets/audio/yoganidra.mp3']
       ),
       RelatedTopic(
         title: 'Mindfulness',

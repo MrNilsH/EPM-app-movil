@@ -1,11 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:appmovil_epmpolitecnico/src/screens/login_screen.dart';
+import 'package:appmovil_epmpolitecnico/src/screens/welcome_screen.dart';
+import 'package:appmovil_epmpolitecnico/src/screens/splash_screen.dart';
+import 'package:appmovil_epmpolitecnico/src/models/user.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
+  @override
+  _RegisterScreenState createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool isLoading = false;
+  String errorMessage = '';
+
+  Future<void> _register() async {
+    setState(() {
+      isLoading = true;
+      errorMessage = '';
+    });
+
+    User? user = await UserModel.registerUser(
+      _usernameController.text,
+      _emailController.text,
+      _phoneController.text,
+      _passwordController.text,
+    );
+
+    setState(() {
+      isLoading = false;
+    });
+
+    if (user != null) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => WelcomeScreen(user: user)),
+      );
+    } else {
+      setState(() {
+        errorMessage = 'Error en el registro. Por favor, inténtalo de nuevo.';
+      });
+    }
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +83,6 @@ class RegisterScreen extends StatelessWidget {
         centerTitle: true,
 
       ),
-
 
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
@@ -141,16 +181,15 @@ class RegisterScreen extends StatelessWidget {
             Center(
               child: Column(
                 children: [
-
-                  //BOTÓN INICIO SESIÓN
+                  if (isLoading)
+                    CircularProgressIndicator()
+                  else
                   ElevatedButton(
 
-                    onPressed: () {
-                    },
-
+                    onPressed: _register,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF005c70), // Cambiar el color del botón
-                      padding: EdgeInsets.symmetric(horizontal: 70, vertical: 12),
+                      backgroundColor: Color(0xFF005c70),
+                      padding: EdgeInsets.symmetric(horizontal: 70, vertical: 15),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
@@ -165,7 +204,7 @@ class RegisterScreen extends StatelessWidget {
 
                   SizedBox(height: 20),
 
-                  //BOTÓN CREAR CUENTA
+                  //BOTÓN VOLVER A INICIO DE SESIÓN
 
                   ElevatedButton(
 

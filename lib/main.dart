@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'src/screens/home_screen.dart';
+import 'src/screens/profile_setup_screen.dart';
 import 'src/screens/login_screen.dart';
-import 'src/utils/authentication.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'src/screens/splash_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -14,27 +20,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: FutureBuilder(
-        future: _checkLoginStatus(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator()); // Add Center to properly position the loader
-          } else {
-            return snapshot.data == true ? HomeScreen() : LoginScreen();
-          }
-        },
-      ),
+      home: SplashScreen(nextScreen: LoginScreen()),
       debugShowCheckedModeBanner: false,
-      routes: {
-        '/login': (context) => LoginScreen(),
-        '/home': (context) => HomeScreen(),
-      },
     );
   }
-
-  Future<bool> _checkLoginStatus() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getBool('isLoggedIn') ?? false;
-  }
 }
-
