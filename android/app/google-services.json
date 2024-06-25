@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "504690309329",
+    "project_id": "bienestarsalud-1b447",
+    "storage_bucket": "bienestarsalud-1b447.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:504690309329:android:0f8deb4710f2642e7fedf0",
+        "android_client_info": {
+          "package_name": "com.epm.appmovil_epmpolitecnico"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAI8w-AHuIAXrnP9hS9NYTnTnDsJ5fesvs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

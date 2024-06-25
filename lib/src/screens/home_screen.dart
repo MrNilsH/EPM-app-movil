@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:appmovil_epmpolitecnico/src/widgets/custom_card.dart';
 import 'package:appmovil_epmpolitecnico/src/models/card_item.dart';
 import 'package:appmovil_epmpolitecnico/src/utils/authentication.dart';
@@ -7,6 +8,10 @@ import 'package:appmovil_epmpolitecnico/src/screens/login_screen.dart';
 import 'package:appmovil_epmpolitecnico/src/screens/perfil_usuario.dart';
 
 class HomeScreen extends StatefulWidget {
+  final User user;
+
+  HomeScreen({required this.user});
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -51,14 +56,12 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: AppBar(
         backgroundColor: Color(0xFF001528),
         iconTheme: const IconThemeData(
           color: Colors.white, // Cambiar el color del icono a blanco
         ),
       ),
-
       drawer: Drawer(
         child: Container(
           color: Color(0xFF001528),
@@ -117,7 +120,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-
       body: Column(
         children: [
           SizedBox(height: 30),
@@ -126,13 +128,11 @@ class _HomeScreenState extends State<HomeScreen> {
             style: TextStyle(
               fontSize: 22.0,
               fontWeight: FontWeight.bold,
-              color: Colors.teal,
+              color: Colors.green,
             ),
             textAlign: TextAlign.center,
           ),
-
           SizedBox(height: 20),
-
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.0),
             child: TextField(
@@ -147,9 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
-
           SizedBox(height: 20.0),
-
           Expanded(
             child: ListView.builder(
               itemCount: _filteredItems.length,
@@ -158,10 +156,8 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
           ),
-
         ],
       ),
-
     );
   }
 }
